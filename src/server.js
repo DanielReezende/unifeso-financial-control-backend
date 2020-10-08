@@ -1,4 +1,3 @@
-// Voltar a assistir no minuto 41:31
 const express = require('express')
 const mongoose = require('mongoose')
 
