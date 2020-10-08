@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const { User } = require("../models");
-const { update } = require("../models/User");
 
 module.exports = {
   async index(request, response) {
@@ -54,7 +53,6 @@ module.exports = {
     const userExists = await User.findById(id);
 
     if (userExists) {
-      
       await User.findByIdAndDelete(id)
 
       return response.json({ message: 'User successfully deleted'})
