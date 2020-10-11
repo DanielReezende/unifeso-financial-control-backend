@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const { User } = require("../models");
 
 module.exports = {
@@ -9,17 +8,10 @@ module.exports = {
   },
   async show (request, response) {
     const { id } = request.params;
-    var user = false
 
-    if (mongoose.Types.ObjectId.isValid(id)){
-      user = await User.findById(id) 
+    const user = await User.find({ _id: id });
 
-      return response.json(user)
-    }
-    if (!user) {
-      return response.status(404).json({ message: 'User not found!!' })
-    }
-
+    return response.status(200).json(user)
   },
   async store(request, response) {
     const { username, password } = request.body;
@@ -38,26 +30,15 @@ module.exports = {
     const { id } = request.params;
     const { username, password } = request.body;
 
-    const userExists = await User.findById(id);
+    const userAltered = await User.findByIdAndUpdate(id, { username, password })
 
-    if (userExists) {
-      const userAltered = await User.findByIdAndUpdate(id, { username, password })
-
-      return response.json(userAltered)
-    }
-
-    return response.status(404).json({ message: 'User not found!!' }) 
+    return response.json(userAltered)
   },
   async destroy(request, response){
     const { id } = request.params;
-    const userExists = await User.findById(id);
+    
+    await User.findByIdAndDelete(id)
 
-    if (userExists) {
-      await User.findByIdAndDelete(id)
-
-      return response.json({ message: 'User successfully deleted'})
-    }
-
-    return response.status(404).json({ message: 'User not found!!' }) 
+    return response.json({ message: 'User successfully deleted' })
   }
 }
