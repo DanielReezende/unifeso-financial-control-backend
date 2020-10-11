@@ -5,7 +5,7 @@ module.exports = {
   validateUserId(request, response, next){
     const { id } = request.params
 
-    if (mongoose.Types.ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return response.status(400).json({ error: "Invalid user ID." })
     }
 
